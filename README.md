@@ -1,8 +1,52 @@
 # Collaborative Grocery Price Tracker
 
-A Google Sheets-based system for tracking grocery prices collaboratively. Multiple users can input their shopping data to identify which stores offer the best prices.
+A system for tracking grocery prices collaboratively with two implementation options:
+1. **Google Apps Script** (embedded in Google Sheets)
+2. **Modern Web App** (React with Google Sheets as database)
 
-## Features
+Both use Google Sheets as the data store, making it easy to share and collaborate!
+
+## 🎯 Choose Your Implementation
+
+### Option 1: Google Apps Script (Simple)
+**Best for**: Quick setup, non-technical users, working directly in Google Sheets
+
+✅ No hosting required
+✅ Works entirely in Google Sheets
+✅ 5-minute setup
+✅ Built-in forms and menus
+
+📁 Files: `GroceryPriceTracker.gs`
+📖 Guide: See sections below
+
+### Option 2: Web App (Modern)
+**Best for**: Better UX, mobile-friendly, visual dashboards with charts
+
+✅ Modern responsive UI
+✅ Interactive charts and visualizations
+✅ Mobile-optimized
+✅ Can be hosted anywhere (Vercel, Netlify, etc.)
+
+📁 Files: `webapp/` directory
+📖 Guide: [webapp/README.md](webapp/README.md)
+
+### Comparison
+
+| Feature | Google Apps Script | Web App |
+|---------|-------------------|---------|
+| **Setup Time** | 5 minutes | 10-15 minutes |
+| **Technical Skills** | None required | Basic (npm, env vars) |
+| **User Interface** | Google Sheets | Modern web UI |
+| **Charts** | Basic (built-in) | Interactive (Recharts) |
+| **Mobile Experience** | OK (Google Sheets app) | Excellent (responsive) |
+| **Hosting** | None needed | Vercel/Netlify/etc |
+| **Data Storage** | Google Sheets | Google Sheets |
+| **Customization** | Limited | Highly customizable |
+| **Cost** | Free | Free (with free hosting) |
+
+---
+
+## Features (Both Versions)
 
 ### Basic Tracking
 - **Weekly Entries**: Track total cost, number of items, and store name for each shopping trip
@@ -289,6 +333,44 @@ This new version replaces web scraping with manual data entry because:
 - ✅ Added: Line item tracking
 - ✅ Added: Multi-user support
 - ✅ Improved: Better analysis and insights
+
+## 🌐 Want a Better UI? Try the Web App!
+
+The **Web App version** provides a modern, chart-rich interface while still using Google Sheets as the database:
+
+### Why Use the Web App?
+
+- 📱 **Mobile-Optimized**: Perfect responsive design for phones and tablets
+- 📊 **Interactive Charts**: Beautiful visualizations with Recharts
+- 🎨 **Modern UI**: Clean, intuitive interface built with React and Tailwind
+- ⚡ **Fast**: Optimized performance with Vite
+- 🔍 **Better Search**: Filter and search through your data easily
+- 🏆 **Gamification**: Contributor leaderboards with gold/silver/bronze rankings
+
+### Quick Start
+
+```bash
+cd webapp
+npm install
+cp .env.example .env
+# Add your Google Sheets API key and Spreadsheet ID
+npm run dev
+```
+
+**Full Documentation**: [webapp/README.md](webapp/README.md)
+
+**Deploy for Free**: Vercel, Netlify, or any static hosting service
+
+### Screenshots
+
+The web app includes:
+- **Dashboard**: Overview with stats and charts
+- **Data Entry Forms**: Clean, validated forms for adding data
+- **Store Analysis**: Interactive bar charts comparing stores
+- **Item Analysis**: Find the cheapest prices with search and filters
+- **Contributors**: Leaderboard showing top contributors with medals
+
+---
 
 ## Future Enhancements
 
