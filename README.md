@@ -17,6 +17,13 @@ A Google Sheets-based system for tracking grocery prices collaboratively. Multip
 - **Price Per Unit**: Calculate unit prices for better comparison
 - **Trend Analysis**: Track price ranges and identify best deals
 
+### Contributor Tracking
+- **Transparent Data Source**: See exactly who contributed each data point
+- **Contributors Column**: Every analysis shows which users provided the data
+- **Contributors Summary**: Dedicated sheet showing each person's contributions
+- **Contribution Statistics**: Track entries, activity levels, and favorite stores per user
+- **Accountability**: Know where your crowd-sourced data is coming from
+
 ## Setup Instructions
 
 ### 1. Create a New Google Sheet
@@ -93,6 +100,25 @@ Track specific items to see where each product is cheapest.
 The system auto-updates when you add entries, but you can manually refresh:
 - Click **📊 Grocery Tracker** > **🔄 Update All Analytics**
 
+### View Contributors
+
+See who is contributing data to your collaborative tracker:
+
+1. **Contributors Column**:
+   - Check the **Store Analysis** sheet - "Contributors" column shows who provided data for each store
+   - Check the **Item Analysis** sheet - "Contributors" column shows who tracked each item
+   - Multiple names appear when multiple people contribute data
+
+2. **Contributors Summary**:
+   - Click **📊 Grocery Tracker** > **👥 Update Contributors Summary**
+   - See detailed statistics for each contributor:
+     - Total weekly entries
+     - Total line items tracked
+     - Average cost per item
+     - Most frequent store
+     - Last contribution date
+   - Top contributor is highlighted in green
+
 ## Sheet Descriptions
 
 ### Weekly Entries
@@ -111,6 +137,7 @@ The system auto-updates when you add entries, but you can manually refresh:
 - **Key Metrics**:
   - Average Cost Per Item (lower is better)
   - Total entries and items tracked
+  - **Contributors**: Shows who provided data for each store
   - Lowest and highest entries
   - Store ranking
 
@@ -128,7 +155,18 @@ The system auto-updates when you add entries, but you can manually refresh:
   - Cheapest store and price
   - Most expensive store and price
   - Average price across all stores
+  - **Contributors**: Shows who tracked each item
   - Price range (difference between highest and lowest)
+
+### Contributors Summary
+- **Purpose**: Track who is contributing data and their activity levels
+- **Key Information**:
+  - Total weekly entries and line items per contributor
+  - Average cost per item for each contributor
+  - Total amount tracked
+  - Most frequent store for each contributor
+  - Last contribution date
+  - Top contributor highlighted in green
 
 ### Setup
 - **Purpose**: Instructions and help documentation
@@ -142,10 +180,11 @@ The system auto-updates when you add entries, but you can manually refresh:
 - **Regular updates**: Enter data weekly for best trends
 
 ### Data Entry Best Practices
-1. **Weekly Tracking**: Enter your total weekly shopping data
-2. **Line Items**: Focus on items you buy regularly (staples)
-3. **Categories**: Use consistent categories for easier analysis
-4. **Notes**: Add context about sales, coupons, or special circumstances
+1. **Use your real name**: This helps identify data sources in collaborative tracking
+2. **Weekly Tracking**: Enter your total weekly shopping data
+3. **Line Items**: Focus on items you buy regularly (staples)
+4. **Categories**: Use consistent categories for easier analysis
+5. **Notes**: Add context about sales, coupons, or special circumstances
 
 ### Getting Useful Insights
 - **Need at least 2-3 weeks** of data for meaningful comparisons

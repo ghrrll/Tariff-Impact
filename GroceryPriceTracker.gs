@@ -9,6 +9,7 @@ const CONFIG = {
     STORE_ANALYSIS: "Store Analysis",
     LINE_ITEMS: "Line Items",
     ITEM_ANALYSIS: "Item Analysis",
+    CONTRIBUTORS: "Contributors Summary",
     SETUP: "Setup"
   },
   COLORS: {
@@ -30,6 +31,7 @@ function onOpen() {
     .addSeparator()
     .addItem('📈 Update Store Analysis', 'updateStoreAnalysis')
     .addItem('📊 Update Item Analysis', 'updateItemAnalysis')
+    .addItem('👥 Update Contributors Summary', 'updateContributorsSummary')
     .addItem('🔄 Update All Analytics', 'updateAllAnalytics')
     .addSeparator()
     .addItem('⚙️ Setup Sheets', 'setupSheets')
@@ -69,6 +71,13 @@ function setupSheets() {
     itemAnalysisSheet = ss.insertSheet(CONFIG.SHEETS.ITEM_ANALYSIS);
   }
   setupItemAnalysisSheet(itemAnalysisSheet);
+
+  // Setup Contributors Summary Sheet
+  let contributorsSheet = ss.getSheetByName(CONFIG.SHEETS.CONTRIBUTORS);
+  if (!contributorsSheet) {
+    contributorsSheet = ss.insertSheet(CONFIG.SHEETS.CONTRIBUTORS);
+  }
+  setupContributorsSheet(contributorsSheet);
 
   // Setup info/help sheet
   let setupSheet = ss.getSheetByName(CONFIG.SHEETS.SETUP);
@@ -131,6 +140,7 @@ function setupStoreAnalysisSheet(sheet) {
   const headers = [
     'Store Name',
     'Total Entries',
+    'Contributors',
     'Total Items Bought',
     'Total Spent',
     'Average Cost Per Item',
@@ -147,20 +157,21 @@ function setupStoreAnalysisSheet(sheet) {
     .setHorizontalAlignment('center');
 
   // Set column widths
-  sheet.setColumnWidth(1, 150);
-  sheet.setColumnWidth(2, 100);
-  sheet.setColumnWidth(3, 130);
-  sheet.setColumnWidth(4, 120);
-  sheet.setColumnWidth(5, 150);
-  sheet.setColumnWidth(6, 120);
-  sheet.setColumnWidth(7, 120);
-  sheet.setColumnWidth(8, 80);
+  sheet.setColumnWidth(1, 150);  // Store Name
+  sheet.setColumnWidth(2, 100);  // Total Entries
+  sheet.setColumnWidth(3, 200);  // Contributors
+  sheet.setColumnWidth(4, 130);  // Total Items Bought
+  sheet.setColumnWidth(5, 120);  // Total Spent
+  sheet.setColumnWidth(6, 150);  // Average Cost Per Item
+  sheet.setColumnWidth(7, 120);  // Lowest Entry
+  sheet.setColumnWidth(8, 120);  // Highest Entry
+  sheet.setColumnWidth(9, 80);   // Rank
 
   // Format currency columns
-  sheet.getRange(2, 4, 1000, 1).setNumberFormat('$#,##0.00'); // Total Spent
-  sheet.getRange(2, 5, 1000, 1).setNumberFormat('$#,##0.00'); // Average Cost Per Item
-  sheet.getRange(2, 6, 1000, 1).setNumberFormat('$#,##0.00'); // Lowest Entry
-  sheet.getRange(2, 7, 1000, 1).setNumberFormat('$#,##0.00'); // Highest Entry
+  sheet.getRange(2, 5, 1000, 1).setNumberFormat('$#,##0.00'); // Total Spent
+  sheet.getRange(2, 6, 1000, 1).setNumberFormat('$#,##0.00'); // Average Cost Per Item
+  sheet.getRange(2, 7, 1000, 1).setNumberFormat('$#,##0.00'); // Lowest Entry
+  sheet.getRange(2, 8, 1000, 1).setNumberFormat('$#,##0.00'); // Highest Entry
 
   sheet.setFrozenRows(1);
 }
@@ -223,6 +234,7 @@ function setupItemAnalysisSheet(sheet) {
     'Most Expensive Price',
     'Average Price',
     'Total Entries',
+    'Contributors',
     'Price Range'
   ];
 
@@ -234,21 +246,66 @@ function setupItemAnalysisSheet(sheet) {
     .setHorizontalAlignment('center');
 
   // Set column widths
-  sheet.setColumnWidth(1, 150);
-  sheet.setColumnWidth(2, 120);
-  sheet.setColumnWidth(3, 150);
-  sheet.setColumnWidth(4, 120);
-  sheet.setColumnWidth(5, 150);
-  sheet.setColumnWidth(6, 120);
-  sheet.setColumnWidth(7, 120);
-  sheet.setColumnWidth(8, 100);
-  sheet.setColumnWidth(9, 120);
+  sheet.setColumnWidth(1, 150);  // Item Name
+  sheet.setColumnWidth(2, 120);  // Category
+  sheet.setColumnWidth(3, 150);  // Cheapest Store
+  sheet.setColumnWidth(4, 120);  // Cheapest Price
+  sheet.setColumnWidth(5, 150);  // Most Expensive Store
+  sheet.setColumnWidth(6, 120);  // Most Expensive Price
+  sheet.setColumnWidth(7, 120);  // Average Price
+  sheet.setColumnWidth(8, 100);  // Total Entries
+  sheet.setColumnWidth(9, 200);  // Contributors
+  sheet.setColumnWidth(10, 120); // Price Range
 
   // Format currency columns
   sheet.getRange(2, 4, 1000, 1).setNumberFormat('$#,##0.00');
   sheet.getRange(2, 6, 1000, 1).setNumberFormat('$#,##0.00');
   sheet.getRange(2, 7, 1000, 1).setNumberFormat('$#,##0.00');
-  sheet.getRange(2, 9, 1000, 1).setNumberFormat('$#,##0.00');
+  sheet.getRange(2, 10, 1000, 1).setNumberFormat('$#,##0.00');
+
+  sheet.setFrozenRows(1);
+}
+
+/**
+ * Setup Contributors Summary sheet
+ */
+function setupContributorsSheet(sheet) {
+  sheet.clear();
+
+  const headers = [
+    'Contributor Name',
+    'Total Weekly Entries',
+    'Total Line Items',
+    'Total Contributions',
+    'Avg Cost Per Item',
+    'Total Amount Tracked',
+    'Most Frequent Store',
+    'Last Entry Date'
+  ];
+
+  sheet.getRange(1, 1, 1, headers.length)
+    .setValues([headers])
+    .setBackground(CONFIG.COLORS.HEADER)
+    .setFontColor('white')
+    .setFontWeight('bold')
+    .setHorizontalAlignment('center');
+
+  // Set column widths
+  sheet.setColumnWidth(1, 150);  // Contributor Name
+  sheet.setColumnWidth(2, 130);  // Total Weekly Entries
+  sheet.setColumnWidth(3, 130);  // Total Line Items
+  sheet.setColumnWidth(4, 130);  // Total Contributions
+  sheet.setColumnWidth(5, 140);  // Avg Cost Per Item
+  sheet.setColumnWidth(6, 140);  // Total Amount Tracked
+  sheet.setColumnWidth(7, 150);  // Most Frequent Store
+  sheet.setColumnWidth(8, 120);  // Last Entry Date
+
+  // Format currency columns
+  sheet.getRange(2, 5, 1000, 1).setNumberFormat('$#,##0.00'); // Avg Cost Per Item
+  sheet.getRange(2, 6, 1000, 1).setNumberFormat('$#,##0.00'); // Total Amount Tracked
+
+  // Format date column
+  sheet.getRange(2, 8, 1000, 1).setNumberFormat('m/d/yyyy');
 
   sheet.setFrozenRows(1);
 }
@@ -733,7 +790,8 @@ function updateStoreAnalysis() {
         totalSpent: 0,
         avgCosts: [],
         lowest: Infinity,
-        highest: -Infinity
+        highest: -Infinity,
+        contributors: new Set()
       };
     }
 
@@ -743,6 +801,7 @@ function updateStoreAnalysis() {
     storeStats[storeName].avgCosts.push(avgCost);
     storeStats[storeName].lowest = Math.min(storeStats[storeName].lowest, avgCost);
     storeStats[storeName].highest = Math.max(storeStats[storeName].highest, avgCost);
+    if (userName) storeStats[storeName].contributors.add(userName);
   });
 
   // Calculate averages and prepare output
@@ -750,10 +809,12 @@ function updateStoreAnalysis() {
 
   for (const [store, stats] of Object.entries(storeStats)) {
     const avgCostPerItem = stats.avgCosts.reduce((a, b) => a + b, 0) / stats.avgCosts.length;
+    const contributorsList = Array.from(stats.contributors).join(', ');
 
     results.push({
       store: store,
       totalEntries: stats.totalEntries,
+      contributors: contributorsList,
       totalItems: stats.totalItems,
       totalSpent: stats.totalSpent,
       avgCostPerItem: avgCostPerItem,
@@ -767,13 +828,14 @@ function updateStoreAnalysis() {
 
   // Clear existing data (keep headers)
   if (analysisSheet.getLastRow() > 1) {
-    analysisSheet.getRange(2, 1, analysisSheet.getLastRow() - 1, 8).clear();
+    analysisSheet.getRange(2, 1, analysisSheet.getLastRow() - 1, 9).clear();
   }
 
   // Write results
   const outputData = results.map((r, index) => [
     r.store,
     r.totalEntries,
+    r.contributors,
     r.totalItems,
     r.totalSpent,
     r.avgCostPerItem,
@@ -783,16 +845,16 @@ function updateStoreAnalysis() {
   ]);
 
   if (outputData.length > 0) {
-    analysisSheet.getRange(2, 1, outputData.length, 8).setValues(outputData);
+    analysisSheet.getRange(2, 1, outputData.length, 9).setValues(outputData);
 
     // Highlight best and worst stores
     if (outputData.length > 0) {
       // Best store (first row) - green
-      analysisSheet.getRange(2, 1, 1, 8).setBackground(CONFIG.COLORS.BEST);
+      analysisSheet.getRange(2, 1, 1, 9).setBackground(CONFIG.COLORS.BEST);
 
       // Worst store (last row) - red
       if (outputData.length > 1) {
-        analysisSheet.getRange(outputData.length + 1, 1, 1, 8).setBackground(CONFIG.COLORS.WORST);
+        analysisSheet.getRange(outputData.length + 1, 1, 1, 9).setBackground(CONFIG.COLORS.WORST);
       }
     }
   }
@@ -833,7 +895,8 @@ function updateItemAnalysis() {
       itemStats[itemName] = {
         category: category || 'Unknown',
         prices: [],
-        entries: 0
+        entries: 0,
+        contributors: new Set()
       };
     }
 
@@ -843,6 +906,7 @@ function updateItemAnalysis() {
       price: price,
       pricePerUnit: pricePerUnit
     });
+    if (userName) itemStats[itemName].contributors.add(userName);
   });
 
   // Calculate statistics for each item
@@ -851,6 +915,7 @@ function updateItemAnalysis() {
   for (const [item, stats] of Object.entries(itemStats)) {
     const prices = stats.prices.map(p => p.price);
     const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const contributorsList = Array.from(stats.contributors).join(', ');
 
     // Find cheapest and most expensive
     const sortedByPrice = [...stats.prices].sort((a, b) => a.price - b.price);
@@ -866,6 +931,7 @@ function updateItemAnalysis() {
       expensivePrice: mostExpensive.price,
       avgPrice: avgPrice,
       totalEntries: stats.entries,
+      contributors: contributorsList,
       priceRange: mostExpensive.price - cheapest.price
     });
   }
@@ -875,7 +941,7 @@ function updateItemAnalysis() {
 
   // Clear existing data (keep headers)
   if (analysisSheet.getLastRow() > 1) {
-    analysisSheet.getRange(2, 1, analysisSheet.getLastRow() - 1, 9).clear();
+    analysisSheet.getRange(2, 1, analysisSheet.getLastRow() - 1, 10).clear();
   }
 
   // Write results
@@ -888,14 +954,15 @@ function updateItemAnalysis() {
     r.expensivePrice,
     r.avgPrice,
     r.totalEntries,
+    r.contributors,
     r.priceRange
   ]);
 
   if (outputData.length > 0) {
-    analysisSheet.getRange(2, 1, outputData.length, 9).setValues(outputData);
+    analysisSheet.getRange(2, 1, outputData.length, 10).setValues(outputData);
 
     // Add conditional formatting for price range
-    const priceRangeCol = analysisSheet.getRange(2, 9, outputData.length, 1);
+    const priceRangeCol = analysisSheet.getRange(2, 10, outputData.length, 1);
     const rule = SpreadsheetApp.newConditionalFormatRule()
       .setGradientMaxpointWithValue(CONFIG.COLORS.WORST, SpreadsheetApp.InterpolationType.NUMBER, '10')
       .setGradientMidpointWithValue(CONFIG.COLORS.NEUTRAL, SpreadsheetApp.InterpolationType.NUMBER, '5')
@@ -914,13 +981,172 @@ function updateItemAnalysis() {
 }
 
 /**
+ * Update contributors summary - shows statistics per contributor
+ */
+function updateContributorsSummary() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const weeklySheet = ss.getSheetByName(CONFIG.SHEETS.WEEKLY_ENTRIES);
+  const lineItemsSheet = ss.getSheetByName(CONFIG.SHEETS.LINE_ITEMS);
+  const contributorsSheet = ss.getSheetByName(CONFIG.SHEETS.CONTRIBUTORS);
+
+  if (!contributorsSheet) {
+    SpreadsheetApp.getUi().alert('Please run Setup Sheets first!');
+    return;
+  }
+
+  const contributorStats = {};
+
+  // Process weekly entries
+  if (weeklySheet) {
+    const weeklyData = weeklySheet.getDataRange().getValues();
+    if (weeklyData.length > 1) {
+      const weeklyEntries = weeklyData.slice(1);
+
+      weeklyEntries.forEach(row => {
+        const [date, userName, storeName, totalCost, numItems, avgCost] = row;
+
+        if (!userName) return;
+
+        if (!contributorStats[userName]) {
+          contributorStats[userName] = {
+            weeklyEntries: 0,
+            lineItems: 0,
+            totalContributions: 0,
+            totalAmount: 0,
+            avgCosts: [],
+            stores: {},
+            lastDate: null
+          };
+        }
+
+        contributorStats[userName].weeklyEntries++;
+        contributorStats[userName].totalContributions++;
+        if (totalCost) contributorStats[userName].totalAmount += totalCost;
+        if (avgCost) contributorStats[userName].avgCosts.push(avgCost);
+        if (storeName) {
+          contributorStats[userName].stores[storeName] = (contributorStats[userName].stores[storeName] || 0) + 1;
+        }
+        if (date) {
+          const entryDate = new Date(date);
+          if (!contributorStats[userName].lastDate || entryDate > contributorStats[userName].lastDate) {
+            contributorStats[userName].lastDate = entryDate;
+          }
+        }
+      });
+    }
+  }
+
+  // Process line items
+  if (lineItemsSheet) {
+    const lineItemsData = lineItemsSheet.getDataRange().getValues();
+    if (lineItemsData.length > 1) {
+      const lineItemsEntries = lineItemsData.slice(1);
+
+      lineItemsEntries.forEach(row => {
+        const [date, userName, storeName] = row;
+
+        if (!userName) return;
+
+        if (!contributorStats[userName]) {
+          contributorStats[userName] = {
+            weeklyEntries: 0,
+            lineItems: 0,
+            totalContributions: 0,
+            totalAmount: 0,
+            avgCosts: [],
+            stores: {},
+            lastDate: null
+          };
+        }
+
+        contributorStats[userName].lineItems++;
+        contributorStats[userName].totalContributions++;
+        if (storeName) {
+          contributorStats[userName].stores[storeName] = (contributorStats[userName].stores[storeName] || 0) + 1;
+        }
+        if (date) {
+          const entryDate = new Date(date);
+          if (!contributorStats[userName].lastDate || entryDate > contributorStats[userName].lastDate) {
+            contributorStats[userName].lastDate = entryDate;
+          }
+        }
+      });
+    }
+  }
+
+  // Calculate statistics and prepare output
+  const results = [];
+
+  for (const [userName, stats] of Object.entries(contributorStats)) {
+    const avgCostPerItem = stats.avgCosts.length > 0
+      ? stats.avgCosts.reduce((a, b) => a + b, 0) / stats.avgCosts.length
+      : 0;
+
+    // Find most frequent store
+    let mostFrequentStore = '-';
+    let maxCount = 0;
+    for (const [store, count] of Object.entries(stats.stores)) {
+      if (count > maxCount) {
+        maxCount = count;
+        mostFrequentStore = store;
+      }
+    }
+
+    results.push({
+      userName: userName,
+      weeklyEntries: stats.weeklyEntries,
+      lineItems: stats.lineItems,
+      totalContributions: stats.totalContributions,
+      avgCostPerItem: avgCostPerItem,
+      totalAmount: stats.totalAmount,
+      mostFrequentStore: mostFrequentStore,
+      lastDate: stats.lastDate || new Date()
+    });
+  }
+
+  // Sort by total contributions (most active first)
+  results.sort((a, b) => b.totalContributions - a.totalContributions);
+
+  // Clear existing data (keep headers)
+  if (contributorsSheet.getLastRow() > 1) {
+    contributorsSheet.getRange(2, 1, contributorsSheet.getLastRow() - 1, 8).clear();
+  }
+
+  // Write results
+  const outputData = results.map(r => [
+    r.userName,
+    r.weeklyEntries,
+    r.lineItems,
+    r.totalContributions,
+    r.avgCostPerItem,
+    r.totalAmount,
+    r.mostFrequentStore,
+    r.lastDate
+  ]);
+
+  if (outputData.length > 0) {
+    contributorsSheet.getRange(2, 1, outputData.length, 8).setValues(outputData);
+
+    // Highlight top contributor
+    if (outputData.length > 0) {
+      contributorsSheet.getRange(2, 1, 1, 8).setBackground(CONFIG.COLORS.BEST);
+    }
+  }
+
+  SpreadsheetApp.getUi().alert('Contributors Summary Updated!',
+    `Analyzed ${results.length} contributors. Check the ${CONFIG.SHEETS.CONTRIBUTORS} sheet for results.`,
+    SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+/**
  * Update all analytics at once
  */
 function updateAllAnalytics() {
   updateStoreAnalysis();
   updateItemAnalysis();
+  updateContributorsSummary();
 
   SpreadsheetApp.getUi().alert('All Analytics Updated!',
-    'Both store analysis and item analysis have been refreshed.',
+    'Store analysis, item analysis, and contributors summary have been refreshed.',
     SpreadsheetApp.getUi().ButtonSet.OK);
 }

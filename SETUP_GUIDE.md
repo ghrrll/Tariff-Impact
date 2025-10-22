@@ -59,6 +59,7 @@ Now others can add their data too!
 ### View Analytics
 - **Store Analysis**: Which store is cheapest overall?
 - **Item Analysis**: Where to buy specific items?
+- **Contributors Summary**: See who's contributing data and their stats
 
 ### Best Practices
 - Enter data right after shopping (while fresh in memory)
